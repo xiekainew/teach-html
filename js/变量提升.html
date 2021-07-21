@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	
+	<script>
+
+		// var a = 2
+		// var b = 33
+		// console.log(window.a)
+
+		
+
+		// (function() {
+		// 	console.log(a)
+		// 	a = 4
+		// 	console.log(a)
+		// 	console.log(window.a)
+		// 	var a = 3
+		// 	console.log(a)
+		// })()
+
+		// var a = 333; // 执行时再赋值
+		
+		// var sayHello;
+		// console.log( sayHey);    
+		// console.log( sayHello);
+
+
+		// if (true) {
+		// 	function sayHey() {
+		// 		console.log("sayHey");
+		// 	}
+		// 	sayHello = function sayHo() {
+		// 		console.log("sayHello");
+		// 	}
+		// } else {
+			
+		// 	sayHello = function sayHo() {
+		// 		console.log("sayHello2");
+		// 	}
+		// }    
+		// // function sayHey() {
+		// // 		console.log("sayHey2");
+		// // 	}
+		// sayHey();    
+		// sayHello();
+
+		// 函数提升：函数声明、函数表达式
+		// 函数声明：直接提升到当前块最前面，if中的{}是属于块，
+		
+
+
+		var val = 1;
+		// window.val = 1;
+		var obj = {
+		    val: 2,
+		    dbl: function () {
+		        this.val *= 2;
+		        val *= 2;
+		        console.log(val);
+		        console.log(this.val);
+		    }
+		};
+		// 说出下面的输出结果
+		obj.dbl();
+		var func = obj.dbl;
+		func();
+
+	</script>
+</body>
+</html>
