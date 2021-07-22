@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	
+	<script>
+		function Parent() {
+			this.name = '北京大学'
+		}
+
+		Parent.prototype.sayName = function() {
+			console.log(this.name)
+		}
+
+		function child() {
+			Parent.call(this)
+		}
+
+		child.prototype = Object.create(Parent.prototype)
+
+		child.prototype.constructor = child
+
+		var c = new child();
+		c.sayName();
+		console.log(c)
+	</script>
+</body>
+</html>
