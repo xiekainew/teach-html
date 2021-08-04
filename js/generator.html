@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	
+	<script>
+		function getName(name) {
+			setTimeout(() => {
+				console.log(name)
+				go.next(34)
+			}, 1000)
+		}
+
+		function getAge(age) {
+			setTimeout(() => {
+				console.log(age)
+				go.next(age)
+			}, 1000)
+		}
+
+		function * getGenerator(name) {
+			var name = yield getName(name)
+			console.log(1, name)
+			var age = yield getAge(name)
+			console.log(2, age)
+		}
+
+		var go = getGenerator('北京')
+		console.log(go.next())
+
+	</script>
+</body>
+</html>

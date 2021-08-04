@@ -19,7 +19,7 @@
 		function child() {
 			Parent.call(this)
 		}
-
+		// 利用Object.create 继承prototype
 		child.prototype = Object.create(Parent.prototype)
 
 		child.prototype.constructor = child
@@ -27,6 +27,32 @@
 		var c = new child();
 		c.sayName();
 		console.log(c)
+
+		// 利用空对象实现继承
+		function Animal() {
+			this.type = '动物'
+		}
+
+		Animal.prototype.say = function() {
+			console.log('旺旺')
+		}
+
+		function Dog() {
+			Animal.call(this)
+			this.name = '狗狗'
+		}
+
+		const F = function() {}
+		F.prototype = Animal.prototype
+
+		Dog.prototype = new F();
+		Dog.constructor = Dog
+
+		var dog = new Dog();
+
+		dog.say()
+		console.log(dog.type)
+
 	</script>
 </body>
 </html>
