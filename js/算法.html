@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+
+	<script>
+		let middleware = []
+		middleware.push(next => {
+			console.log(1)
+			next()
+			console.log(1.1)
+		})
+		middleware.push(next => {
+			console.log(2)
+			next()
+			console.log(2.2)
+		})
+		middleware.push(next => {
+			console.log(3)
+			next()
+			console.log(3.3)
+		})
+
+		console.log(middleware)
+
+
+		function compile(middleware) {
+			return function() {
+
+				var target = middleware.shift()
+				target && target(compile(middleware));
+			}
+		}
+
+		var fn = compile(middleware);
+		// fn();
+		// console.log(fn)
+		var list = [{
+			id: 2,
+			before: 1
+		}, {
+			id: 1,
+			last: true
+		}, {
+			id: 3,
+			after: 1
+		}, {
+			id: 5,
+			first: true
+		}, {
+			id: 6,
+			last: true
+		}, {
+			id: 7,
+			last: true
+		}, {
+			id: 8,
+			last: true
+		}]
+
+		list.sort(function(a, b) {
+			return a.id - b.id
+		})
+		console.log(list)
+	</script>
+	
+</body>
+</html>

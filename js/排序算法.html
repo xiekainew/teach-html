@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>排序算法</title>
+</head>
+<body>
+	
+
+	<script>
+		var arr = [1,4,6,8,3,2,5,7];
+
+
+		// 冒泡排序
+		function pop(arr) {
+			for (var i = 0; i < arr.length; i++) {
+				for (var j = i + 1; j < arr.length; j++) {
+					if (arr[i] > arr[j]) {
+						var a = arr[i]
+						arr[i] = arr[j]
+						arr[j] = a
+					}
+				}
+			}
+		}
+
+		// 快速排序
+		// 原理：取数组中间一项，并把原数组中间一项删除，遍历这个数组与中间一项做对比，小的放到left数组内，大的放到right数组内，通过递归，处理左右数组，当接收到的数组长度为1时，直接返回该数组
+
+
+		function fast(arr) {
+			var c = parseInt(arr.length / 2)
+
+			if (c === 0) {
+				return arr
+			}
+
+			var center = arr.splice(c, 1)[0]
+
+			var left = [];
+			var right = [];
+			for (var i = 0; i < arr.length; i++) {
+				if (arr[i] < center) {
+					left.push(arr[i])
+				} else {
+					right.push(arr[i])
+				}
+			}
+			return [].concat(fast(left), [center], fast(right))
+		}
+
+		fast(arr)
+
+		console.log(fast(arr))
+	</script>
+</body>
+</html>
