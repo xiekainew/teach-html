@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>查找html标签</title>
+</head>
+<body>
+	<ul>
+		<li>1</li>
+		<li>2</li>
+		<li>3</li>
+		<li>4</li>
+		<li>5</li>
+	</ul>
+
+	<script defer src="./js/derfer.js"></script>
+	<script async src="./js/async.js"></script>
+
+	<script>
+		console.log('start')
+		document.addEventListener('DOMContentLoaded', () => {
+			console.log('DCL')
+		})
+		const maxBy = (list, keyBy) => {
+			let target = null
+			list.forEach(item => {
+				target = target ? target : item
+				if (target[1] < item[1]) {
+					target = item
+				}
+			})
+			return target
+			// return list.reduce((x, y) => {
+			// 	console.log(x)
+			// 	console.log(y)
+			// 	console.log('-----')
+			// 	return x[1] > y[1] ? x : y
+			// })
+		}
+
+		function getFrequentTag () {
+			const tagNames = [...document.querySelectorAll('*')].map(x => x.tagName)
+
+		  	const tags = tagNames.reduce((o, tag) => { 
+		    	o[tag] = o[tag] ? o[tag] + 1 : 1;
+		    	return o
+		  	}, {})
+		  	console.log(tags)
+		  	return maxBy(Object.entries(tags), tag => tag[1])
+		}
+		console.log(getFrequentTag())
+	</script>
+</body>
+</html>		

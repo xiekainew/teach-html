@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>instanceof</title>
+</head>
+<body>
+	
+	<script>
+		
+		function myInstance(left, right) {
+			let rightProto = right.prototype;
+			let leftValue = left.__proto__;
+
+			while (true) {
+				if (leftValue === null) {
+					return false
+				}
+
+				if (rightProto === leftValue) {
+					return true
+				}
+
+				leftValue = leftValue.__proto__
+			}
+		}
+
+		function A() {}
+		var a = new A();
+
+		var n = 0;
+		function test() {
+			while (true) {
+				n++ 
+				if (n == 2) {
+					return false
+				}
+
+				console.log(n)
+			}
+		}
+
+		test()
+
+		Function.prototype.bind = function() {
+			var that = this;
+			var target = [].shift.call(arguments);
+			var args = [].slice.call(arguments);
+			return function() {
+				[].push.apply(args, arguments)
+				that.apply(target, args)
+			}
+		}
+	</script>	
+</body>
+</html>

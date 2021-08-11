@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+</head>
+
+<body>
+    <button id="work">long time work</button>
+    <button id="interaction">another work</button>
+</body>
+<script>
+    var workBtn = document.getElementById("work")
+    var interactionBtn = document.getElementById("interaction")
+    var iterationCount = 1000
+    var value = 0
+
+    var expensiveCalculation = function(IdleDeadline) {
+
+    	while (iterationCount > 0 && IdleDeadline.timeRemaining() > 1) {
+            value =
+                Math.random() < 0.5 ? value + Math.random() : value + Math.random()
+            iterationCount = iterationCount - 1
+        }
+        requestIdleCallback(expensiveCalculation)
+    }
+
+    // 模拟一段耗时操作
+    workBtn.addEventListener("click", function () {
+        requestIdleCallback(expensiveCalculation)
+    })
+
+    interactionBtn.addEventListener("click", function () {
+        alert('done another work')
+    })
+</script>
+
+</html>

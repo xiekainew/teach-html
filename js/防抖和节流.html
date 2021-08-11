@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>防抖和节流</title>
+</head>
+<body>
+	<button id="btn">点击</button>
+
+	<script>
+		var btn = document.getElementById("btn")
+		console.log(btn)
+
+		btn.onclick = debounce(function() {
+			console.log(333)
+		}, 2000)
+
+		// 函数节流
+		function shake(fn, delay) {
+			var timer = null;
+
+			return function() {
+				if (timer) return;
+				timer = setTimeout(() => {
+					clearTimeout(timer);
+					timer = null;
+				}, delay || 1000);
+				fn.apply(null, arguments);
+			}
+		}
+
+		function debounce(fn, delay) {
+			var timer = null;
+
+			return function() {
+				var _this = this;
+
+				if (timer) {
+					clearTimeout(timer);
+				}
+
+				timer = setTimeout(() => {
+					clearTimeout(timer);
+					timer = null;
+					fn.apply(_this, arguments);
+				}, delay || 1000)
+			}
+		}
+	</script>
+</body>
+</html>

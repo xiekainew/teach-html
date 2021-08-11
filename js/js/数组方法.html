@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>数组方法</title>
+</head>
+<body>
+	
+	<script>
+// var obj = [{
+// 	name: '北京大学',
+// 	age: 23
+// }]
+
+// // obj = ['sss', 444]
+
+// console.log(obj.entries().next().value) // [0, "sss"]
+
+// 		console.log(Object.entries(obj))
+		var arr = [3,4,2,5,7,6,1]
+
+		function fast(arr) {
+			var l = parseInt(arr.length / 2)
+
+			if (l == 0) {
+				return arr
+			}
+
+			var target = arr.splice(l, 1)[0]
+			var left = []
+			var right = []
+			for (var i = 0; i < arr.length; i++) {
+				if (arr[i] < target) {
+					left.push(arr[i])
+				} else {
+					right.push(arr[i])
+				}
+			}
+			return [].concat(fast(left), target, fast(right))
+		}
+
+		console.log(fast(arr))
+
+		function myNew(fn) {
+			return function() {
+				var obj = new Object();
+				obj.__proto__ = fn.prototype
+				fn.apply(obj, arguments)
+				return obj
+			}
+		}
+
+		function getName(){
+		    console.log(1)
+		}
+		function Foo() {
+		    this.getName = function () {
+		        console.log(2); 
+		    };
+		    return this;
+		}
+		Foo.getName = function () {
+		    console.log(3);
+		};
+
+		var a = new Foo.getName(); // 3 .的优先级高于new 
+		var b = new Foo().getName(); // 2  new Foo() 高于Foo()
+		var c = new new Foo().getName(); // 2
+
+
+		function some(a, b, c) {
+			console.log(a + b + c)
+		}
+
+		function curring(fn, currArgs) {
+			var args = []
+
+			return function() {
+				[].push.apply(args, arguments)
+				if (currArgs) {
+					args = args.concat(currArgs)
+				}
+				console.log(args)
+				console.log(args.length)
+				console.log(fn.length)
+				if (args.length === fn.length) {
+					fn.apply(null, args)
+				}
+
+				return curring(fn, args)
+			}
+
+		}
+
+		var s = curring(some);
+		s(1)(2)(3)
+
+		class Promise {
+			state = 'pending';
+			value = null;
+
+			callbacks = [];
+
+			constructor(fn) {
+				fn(this._resolve.bind(this), this._reject.bind(this));
+			}
+
+			then(onFulfilled, onRejected) {
+				return new Promise((resolve, reject) => {
+					this._handle({
+						onFulfilled: onFulfilled || null,
+						onRejected: onRejected || null,
+						resolve,
+						reject
+					})
+				})
+			}
+
+			catch(onRejected) {
+				return this.then(null, onRejected)
+			}
+
+			_handle(callback) {
+				if (this.state === 'pending') {
+					this.callbacks.push(callback);
+					return
+				}
+
+				let cb;
+				const isFul = this.state === 'fulfilled';
+
+				cb = isFul ? callback.onFulfilled : callback.onRejected
+
+				if (!cb) {
+					cb = isFul ? callback.resolve : callback.reject
+					cb(this.value)
+				}
+
+				let ret
+				try {
+					ret = cb(this.value)
+					cb = isFul ? callback.resolve : callback.reject
+				} catch(error) {
+					ret = error
+					cb = callback.reject
+				} finally {
+					cb(ret)
+				}
+			}
+
+			_resolve(value) {
+				this.value = value;
+				this.state = 'fulfilled';
+
+				this.callbacks.forEach(callback => this._handle(callback))
+			}
+
+			_reject(value) {
+				this.value = value;
+				this.state = 'rejected';
+
+				this.callbacks.forEach(callback => this._handle(callback))
+			}
+		}
+
+
+	</script>
+</body>
+</html>
