@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Promise</title>
+</head>
+<body>
+	
+	<script>
+		
+		
+		function Promise(fn) {
+			this.fulCallbacks = [];
+			this.rejCallbacks = [];
+			this.state = 'pending';
+			this.value = null;
+
+			fn(this._resolve.bind(this), this._reject.bind(this));
+		}
+
+		Promise.prototype.then = function(onFulFilled, onRejected) {
+			if (this.state === 'pending') {
+				this.fulCallbacks.push(onFulFilled)
+			} else if (this.state === 'onFulFilled') {
+				onFulFilled(this.value)
+			} else {
+				onRejected && onRejected(this.value)
+			}
+			return this;
+		}
+
+		Promise.prototype.catch = function(rejected) {
+			if (this.state === 'pending') {
+				this.rejCallbacks.push(rejected)
+			} else {
+				rejected(this.value)
+			}
+
+			return this;
+		}
+
+		Promise.prototype._resolve = function(value) {
+			this.value = value;
+			this.state = 'onFulFilled';
+
+			this.fulCallbacks.forEach(fn => fn(value));
+		}
+
+		Promise.prototype._reject = function(value) {
+			this.value = value;
+			this.state = 'rejected';
+
+			this.rejCallbacks.forEach(fn => fn(value));
+		}
+
+		
+
+
+
+		var p = new Promise((resolve, reject) => {
+			console.log('done')
+			// resolve('5s')
+			reject('error')
+			console.log(33)
+		})
+
+		p.then(tip => {
+			console.log(tip)
+		}, err => {
+			console.log(err)
+		})
+
+		p.then(tip => {
+			console.log(tip)
+		}).catch(tip => {
+			console.log(tip)
+		})
+
+		p.catch(err => {
+			console.log(err)
+		})
+	</script>
+</body>
+</html>
